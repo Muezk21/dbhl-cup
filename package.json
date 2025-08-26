@@ -19,9 +19,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
-    "tailwindcss": "^4",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12",
     "typescript": "^5"
   },
   "description": "DBHL Cup - Ball Hockey Tournament Website",
@@ -29,7 +31,11 @@
     "type": "git",
     "url": "git+https://github.com/Muezk21/dbhl-cup.git"
   },
-  "keywords": ["hockey", "tournament", "sports"],
+  "keywords": [
+    "hockey",
+    "tournament",
+    "sports"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

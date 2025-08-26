@@ -1,5 +1,8 @@
-@import "tailwindcss";
+
+/* Import Google Fonts - Inter for body, Poppins for headings */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
 
 :root {
   /* Core Colors - Athletic Red, Black, White Theme */
