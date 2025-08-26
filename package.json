@@ -1,5 +1,5 @@
 {
-  "name": "out",
+  "name": "dbhl-cup",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -24,16 +24,14 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "<<<<<<< HEAD\r This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).",
-  "main": "index.js",
+  "description": "DBHL Cup - Ball Hockey Tournament Website",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Muezk21/dbhl-cup.git"
   },
-  "keywords": [],
+  "keywords": ["hockey", "tournament", "sports"],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Muezk21/dbhl-cup/issues"
   },
