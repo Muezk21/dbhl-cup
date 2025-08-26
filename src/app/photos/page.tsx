@@ -1,4 +1,3 @@
-typescriptreact
 export default function PhotosPage() {
   return (
     <div>

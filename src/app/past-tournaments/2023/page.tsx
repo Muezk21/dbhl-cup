@@ -1,4 +1,3 @@
-typescriptreact
 const PastTournaments2023Page = () => {
   return (
     <div>

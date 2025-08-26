@@ -1,16 +1,19 @@
 # DBHL Cup Next.js Project Blueprint
 
 ## Project Name: DBHL Cup
-
 ## Description
 
 A Next.js application using the App Router to manage an annual ball hockey tournament. Features include displaying tournament details, team registration, game schedules, and potentially player statistics.
 The primary color theme for the website will be red, black, and white.
+
+The main page background will feature a provided image. The global CSS file needs to be fixed to ensure correct styling.
 ## Technologies
+The user provided the specific parsing error for globals.css, and I will fix it by moving the @import rule to the top of the file.
 
 *   **Framework:** Next.js 14+ (App Router)
 *   **Language:** TypeScript
 *   **Styling:** Tailwind CSS
+*   **Images:** Next/image
 *   **Database:** Firebase (Firestore)
 *   **Authentication:** Firebase Authentication
 *   **Data Mutations:** Server Actions
@@ -18,6 +21,9 @@ The primary color theme for the website will be red, black, and white.
 *   **Deployment:** Vercel or similar
 
 ## Project Structure
+
+**Project Overview:**
+A Next.js application for a sports club, featuring information about the club, sponsors, and potentially team details and events.
 
 ```
 /dbhl-cup

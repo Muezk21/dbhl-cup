@@ -1,4 +1,3 @@
-typescriptreact
 const RulesPage = () => {
   return (
     <div>

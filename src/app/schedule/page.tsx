@@ -1,4 +1,3 @@
-typescriptreact
 const SchedulePage = () => {
   const scheduleData = [
     { id: 1, date: '2024-08-10', time: '10:00 AM', teams: 'Team A vs Team B', location: 'Rink 1' },

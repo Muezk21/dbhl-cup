@@ -1,10 +1,9 @@
-typescriptreact
 'use client';
 
 import React from 'react';
 
-  return (
 function TeamRegistrationPage() {
+    return (
     <div>
       <h1>Team Registration</h1>
       <form>

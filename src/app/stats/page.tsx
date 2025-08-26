@@ -1,6 +1,4 @@
-typescriptreact
 // src/app/stats/page.tsx
-
 const StatsPage = () => {
   return (
     <div>

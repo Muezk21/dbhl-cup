@@ -1,4 +1,3 @@
-typescriptreact
 export default function Tournament2023Page() {
   return (
     <div>
