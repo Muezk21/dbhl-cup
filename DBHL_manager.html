@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBHL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #A01F29; /* A rich red background to match the jersey */
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .tab-button.active {
+            @apply text-white border-white;
+        }
+        .tab-button {
+            @apply text-white hover:text-white hover:border-white;
+        }
+        /* Custom styles for tables */
+        .table-container th, .table-container td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #0047AB; /* A vibrant blue border */
+        }
+    </style>
+</head>
+<body class="bg-[#A01F29] min-h-screen flex flex-col items-center py-10">
+    <!-- Main Application Container -->
+    <div class="bg-red-900 text-white p-8 rounded-xl shadow-lg w-full max-w-4xl border-4 border-[#0047AB]">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center text-white mb-2 tracking-widest">DBHL</h1>
+        <p class="text-center text-gray-200 text-lg sm:text-xl font-medium mb-6 tracking-wide">3rd Annual Tournament</p>
+        <!-- Tabbed Navigation -->
+        <div class="border-b-2 border-white mb-6">
+            <nav class="-mb-px flex space-x-4 sm:space-x-8" aria-label="Tabs">
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="home">
+                    HOME
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="rosters">
+                    ROSTERS
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="schedule">
+                    SCHEDULE
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="standings">
+                    STANDINGS
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="stats">
+                    STATS
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="results">
+                    RESULTS
+                </button>
+                <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="rules">
+                    RULES
+                </button>
+            </nav>
+        </div>
+        <!-- Content Panels -->
+        <div id="content-area">
+            <!-- Home Tab -->
+            <div id="home-tab" class="tab-content">
+                <p class="text-gray-200 text-xl font-medium mb-4 text-center tracking-wide">Hit Hard or Go Home!</p>
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">Welcome</h2>
+                <p class="text-gray-300 leading-relaxed text-base">Welcome to the 2025 DBHL Cup!</p>
+            </div>
+            <!-- Rosters Tab -->
+            <div id="rosters-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Rosters</h2>
+                <div id="rosters-content" class="text-gray-300 leading-relaxed space-y-6">
+                    <!-- Rosters content will be dynamically inserted here -->
+                </div>
+            </div>
+            <!-- Schedule Tab -->
+            <div id="schedule-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Schedule</h2>
+                <div id="schedule-content" class="text-gray-300 leading-relaxed space-y-2">
+                    <!-- Schedule content will be dynamically inserted here -->
+                </div>
+            </div>
+            <!-- Standings Tab -->
+            <div id="standings-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Standings</h2>
+                <div id="standings-content" class="text-gray-300 leading-relaxed">
+                    <!-- Standings content will be dynamically inserted here -->
+                </div>
+            </div>
+            <!-- Stats Tab -->
+            <div id="stats-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Stats</h2>
+                <div id="stats-content" class="text-gray-300 leading-relaxed">
+                    <!-- Stats content will be dynamically inserted here -->
+                </div>
+            </div>
+            <!-- Results Tab -->
+            <div id="results-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Results</h2>
+                <div id="results-content" class="text-gray-300 leading-relaxed">
+                    <!-- Results content will be dynamically inserted here -->
+                </div>
+            </div>
+            <!-- Rules Tab -->
+            <div id="rules-tab" class="tab-content" style="display: none;">
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">DBHL Cup Rules & Regulations</h2>
+                <div class="text-gray-300 leading-relaxed space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">DBHL Cup</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>3 on 3</li>
+                            <li>07'-10'</li>
+                            <li>6 Teams</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Regulations</h3>
+                        <p class="text-gray-300">Helmets with cages, gloves, running shoes are required. Shin pads are recommended.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">On Floor Rules</h3>
+                        <ul class="list-decimal list-inside space-y-1 text-gray-300">
+                            <li>Offsides (floating blue line)</li>
+                            <li>No Icing</li>
+                            <li>All penalties will result in a penalty shot by the player who drew the penalty.</li>
+                            <li>Goalie smothers result in defensive neutral zone faceoffs with zone gained.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Penalties</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>High sticking</li>
+                            <li>Hooking</li>
+                            <li>Holding</li>
+                            <li>Tripping</li>
+                            <li>Delay of game</li>
+                            <li>Unsportsmanlike conduct</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Round Robin Game Format</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>Two 8 minute halves</li>
+                            <li>Run timed</li>
+                            <li>Tie games at the end of regulation will result in a tie</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Playoff Game Format</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>Stop timed</li>
+                            <li>Ties will result in 5 minute overtime followed by shootout</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">Tournament Format</h3>
+                        <p class="text-gray-300">3 round robin games</p>
+                        <p class="text-gray-300">1st and 2nd place receive a bye to semi-finals</p>
+                        <h4 class="font-medium text-white mt-4 mb-2">Quarters</h4>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>Matchup A: 3rd vs 6th</li>
+                            <li>Matchup B: 4th vs 5th</li>
+                        </ul>
+                        <h4 class="font-medium text-white mt-4 mb-2">Semi-Finals</h4>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300">
+                            <li>1st Place vs Matchup A winner</li>
+                            <li>2nd Place vs Matchup B winner</li>
+                        </ul>
+                        <h4 class="font-medium text-white mt-4 mb-2">Finals</h4>
+                        <p class="text-gray-300">Tbd vs. Tbd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Loading indicator -->
+        <div id="loading" class="text-center text-white mt-4" style="display: none;">
+            Loading data from Google Sheets...
+        </div>
+        <!-- Error message -->
+        <div id="error-message" class="text-center text-white mt-4" style="display: none;">
+            Could not load data from Google Sheets. **Please ensure each sheet is published to the web.**
+        </div>
+        <!-- Last updated timestamp -->
+        <div id="last-updated" class="text-center text-gray-400 text-sm mt-4"></div>
+    </div>
+    <script>
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        const BASE_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2-RzSEQUFhIHwYprym6uj5wyJEpgsMpk2-xAIcoXVVD8YOE0G5sTVC9xPuK-IpVf6uZwS7itDSSg-/pub?output=csv';
+        const SHEET_URLS = {
+            rosters: `${BASE_URL}&gid=1749294497`,
+            schedule: `${BASE_URL}&gid=1797550990`,
+            stats: `${BASE_URL}&gid=1954362484`,
+            standings: `${BASE_URL}&gid=1459410560`,
+            results: `${BASE_URL}&gid=2083437299`,
+            rules: `${BASE_URL}&gid=1430039844`,
+        };
+        
+        async function refreshData() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+            const allData = {};
+
+            try {
+                const fetchPromises = Object.keys(SHEET_URLS).map(async (key) => {
+                    const response = await fetch(SHEET_URLS[key]);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status} for ${key}`);
+                    }
+                    allData[key] = await response.text();
+                });
+                await Promise.all(fetchPromises);
+                
+                document.getElementById('loading').style.display = 'none';
+                displayData(allData);
+                const lastUpdatedElement = document.getElementById('last-updated');
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                lastUpdatedElement.textContent = `Last updated: ${timeString}`;
+            } catch (error) {
+                console.error("Could not fetch data:", error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
+        
+        window.addEventListener('load', async () => {
+            refreshData(); // Initial data fetch on load
+            setInterval(refreshData, 30000); // Refresh every 30 seconds
+            document.querySelector('[data-tab-id="home"]').click();
+        });
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.dataset.tabId;
+                
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                tabContents.forEach(content => content.style.display = 'none');
+                document.getElementById(`${tabId}-tab`).style.display = 'block';
+            });
+        });
+        
+        function displayData(data) {
+            document.getElementById('rosters-content').innerHTML = data.rosters ? formatRosters(data.rosters) : '<p class="text-gray-500 italic">No rosters available yet. Please add data to your Google Sheet.</p>';
+            document.getElementById('schedule-content').innerHTML = data.schedule ? formatSchedule(data.schedule) : '<p class="text-gray-500 italic">No schedule available yet. Please add data to your Google Sheet.</p>';
+            document.getElementById('standings-content').innerHTML = data.standings ? formatMarkdownTable(data.standings) : '<p class="text-gray-500 italic">No standings available yet. Please add data to your Google Sheet.</p>';
+            document.getElementById('stats-content').innerHTML = data.stats ? formatStatsTable(data.stats) : '<p class="text-gray-500 italic">No stats available yet. Please add data to your Google Sheet.</p>';
+            document.getElementById('results-content').innerHTML = data.results ? formatResultsTable(data.results) : '<p class="text-gray-500 italic">No results available yet. Please add data to your Google Sheet.</p>';
+        }
+        
+        function formatRosters(text) {
+            if (!text) return '';
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            let teams = [];
+            let currentTeam = null;
+
+            // Step 1: Parse the data into a structured array
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('Team')) {
+                    if (currentTeam) {
+                        teams.push(currentTeam);
+                    }
+                    currentTeam = { name: trimmedLine, players: [] };
+                } else if (currentTeam && trimmedLine) {
+                    currentTeam.players.push(trimmedLine);
+                }
+            });
+            if (currentTeam) {
+                teams.push(currentTeam);
+            }
+
+            // Step 2: Find the maximum number of players to ensure column alignment
+            const maxRosterSize = teams.reduce((max, team) => Math.max(max, team.players.length), 0);
+
+            // Step 3: Render the grid with padding
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+            teams.forEach(team => {
+                html += `
+                    <div class="bg-red-800 p-4 rounded-lg flex flex-col items-start min-h-full">
+                        <h3 class="text-lg font-semibold text-white mb-2 border-b-2 border-white w-full pb-2">${team.name}</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-300 w-full">
+                `;
+                // Loop to the maximum roster size, padding with empty list items
+                for (let i = 0; i < maxRosterSize; i++) {
+                    const player = team.players[i];
+                    // The fix: Add min-height for consistent spacing and list-none to hide empty bullets
+                    const classList = player ? 'py-1' : 'py-1 list-none';
+                    html += `<li class="min-h-[1.5rem] ${classList}">${player ? player.replace('(C)', '<span class="font-bold text-white">(C)</span>') : ''}</li>`;
+                }
+                html += `
+                        </ul>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            return html;
+        }
+
+        function formatSchedule(text) {
+            if (!text) return '';
+            let html = '';
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            lines.forEach(line => {
+                const parts = line.split(',');
+                if (parts.length >= 2) {
+                    const time = parts[0].trim();
+                    const match = parts[1].trim();
+                    if (time && match) {
+                        html += `<p class="text-gray-300"><span class="font-semibold text-white">${time}:</span> ${match}</p>`;
+                    }
+                } else if (line.trim().toLowerCase() === 'break') {
+                    html += `<p class="text-center text-white italic my-4">${line.trim()}</p>`;
+                }
+            });
+            return html;
+        }
+        
+        function formatMarkdownTable(text) {
+            if (!text) return '';
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return '';
+            
+            const headers = lines[0].split(',').map(h => h.trim());
+            const dataRows = lines.slice(1);
+            
+            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            headers.forEach(header => {
+                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
+            });
+            html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
+            dataRows.forEach(line => {
+                const cells = line.split(',').map(c => c.trim());
+                if (cells.length > 0) {
+                    html += '<tr>';
+                    cells.forEach(cell => {
+                        html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${cell}</td>`;
+                    });
+                    html += '</tr>';
+                }
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+        
+        function formatStatsTable(text) {
+            if (!text) return '';
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return '';
+            
+            const headers = lines[0].split(',').map(h => h.trim());
+            const dataRows = lines.slice(1);
+            
+            const playerData = dataRows.map(line => {
+                const cells = line.split(',').map(c => c.trim());
+                const player = {};
+                if (cells.length > 0) {
+                    headers.forEach((header, index) => {
+                        player[header] = cells[index];
+                    });
+                    player['G'] = parseInt(player['G']) || 0;
+                    player['A'] = parseInt(player['A']) || 0;
+                    player['Pts'] = player['G'] + player['A'];
+                }
+                return player;
+            }).filter(player => Object.keys(player).length > 0);
+            
+            playerData.sort((a, b) => b.Pts - a.Pts);
+            
+            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-red-700 rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            const tableHeaders = ['Player', 'Team', 'G', 'A', 'Pts'];
+            tableHeaders.forEach(header => {
+                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
+            });
+            html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
+            playerData.forEach(player => {
+                html += '<tr>';
+                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Player}</td>`;
+                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Team}</td>`;
+                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.G}</td>`;
+                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.A}</td>`;
+                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Pts}</td>`;
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function formatResultsTable(text) {
+            if (!text) return '';
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return '';
+            
+            const dataRows = lines.slice(1);
+            
+            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            const headers = ['Matchup', 'Score'];
+            headers.forEach(header => {
+                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
+            });
+            html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
+            dataRows.forEach(line => {
+                const cells = line.split(',').map(c => c.trim());
+                if (cells.length >= 3) {
+                    const matchup = cells[0];
+                    const score1 = cells[1];
+                    const score2 = cells[2];
+                    const finalScore = `${score1} - ${score2}`;
+                    
+                    html += '<tr>';
+                    html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">${matchup}</td>`;
+                    html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${finalScore}</td>`;
+                    html += '</tr>';
+                }
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+        
+        function formatRules(text) {
+            if (!text) return '';
+            let html = '';
+            const sections = text.split('\n\n').map(s => s.trim());
+            
+            sections.forEach(section => {
+                const lines = section.split('\n').filter(line => line.trim() !== '');
+                if (lines.length > 0) {
+                    const heading = lines[0].trim();
+                    const content = lines.slice(1);
+                    
+                    if (heading.endsWith('Tournament Format')) {
+                        html += `<div><h3 class="text-lg font-semibold text-white mb-2">${heading}</h3>`;
+                        content.forEach(line => {
+                            if (line.includes('Quarters') || line.includes('Semi-Finals') || line.includes('Finals')) {
+                                html += `<h4 class="font-medium text-white mt-4 mb-2">${line}</h4>`;
+                            } else if (line.startsWith('- ')) {
+                                const listItems = line.replace('- ', '').split('\n').map(item => item.trim());
+                                html += `<ul class="list-disc list-inside space-y-1 text-gray-300">`;
+                                listItems.forEach(item => {
+                                    html += `<li>${item}</li>`;
+                                });
+                                html += `</ul>`;
+                            } else {
+                                html += `<p class="text-gray-300">${line}</p>`;
+                            }
+                        });
+                        html += `</div>`;
+                    } else if (heading.includes('Rules') || heading.includes('Regulations') || heading.includes('Game Format') || heading.includes('Penalties')) {
+                        html += `<div><h3 class="text-lg font-semibold text-white mb-2">${heading}</h3>`;
+                        if (content.length > 0) {
+                            if (content[0].startsWith('*')) {
+                                html += `<ul class="list-disc list-inside space-y-1 text-gray-300">`;
+                                content.forEach(line => {
+                                    html += `<li>${line.replace('* ', '')}</li>`;
+                                });
+                                html += `</ul>`;
+                            } else if (content[0].startsWith('1.')) {
+                                html += `<ul class="list-decimal list-inside space-y-1 text-gray-300">`;
+                                content.forEach(line => {
+                                    html += `<li>${line.substring(line.indexOf('.') + 1).trim()}</li>`;
+                                });
+                                html += `</ul>`;
+                            } else {
+                                html += `<p class="text-gray-300">${content.join(' ')}</p>`;
+                            }
+                        }
+                        html += `</div>`;
+                    } else if (heading.includes('DBHL Cup')) {
+                         html += `<div><h3 class="text-lg font-semibold text-white mb-2">${heading}</h3>`;
+                         if (content.length > 0) {
+                             html += `<ul class="list-disc list-inside space-y-1 text-gray-300">`;
+                             content.forEach(line => {
+                                 html += `<li>${line.replace('* ', '')}</li>`;
+                             });
+                             html += `</ul>`;
+                         }
+                         html += `</div>`;
+                    } else {
+                        html += `<div><p class="text-gray-300">${section}</p></div>`;
+                    }
+                }
+            });
+            
+            return html;
+        }
+    </script>
+</body>
+</html>
