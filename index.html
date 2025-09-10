@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DBHL</title>
+    <!-- Include Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -12,6 +13,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #A01F29; /* A rich red background to match the jersey */
+            overflow-x: hidden; /* Prevent any horizontal overflow */
         }
         
         h1, h2, h3 {
@@ -32,14 +34,15 @@
         }
     </style>
 </head>
-<body class="bg-[#A01F29] min-h-screen flex flex-col items-center py-10">
+<body class="bg-[#A01F29] min-h-screen flex flex-col items-center p-4 sm:p-10">
     <!-- Main Application Container -->
-    <div class="bg-red-900 text-white p-8 rounded-xl shadow-lg w-full max-w-4xl border-4 border-[#0047AB]">
+    <div class="bg-red-900 text-white p-4 sm:p-8 rounded-xl shadow-lg w-full max-w-4xl border-4 border-[#0047AB]">
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center text-white mb-2 tracking-widest">DBHL</h1>
         <p class="text-center text-gray-200 text-lg sm:text-xl font-medium mb-6 tracking-wide">3rd Annual Tournament</p>
         <!-- Tabbed Navigation -->
         <div class="border-b-2 border-white mb-6">
-            <nav class="-mb-px flex space-x-4 sm:space-x-8" aria-label="Tabs">
+            <!-- Added flex-wrap for mobile responsiveness -->
+            <nav class="-mb-px flex flex-wrap justify-center sm:justify-start space-x-2 sm:space-x-8" aria-label="Tabs">
                 <button type="button" class="tab-button inline-flex items-center px-1 py-4 text-sm font-semibold border-b-2 border-transparent focus:outline-none" data-tab-id="home">
                     HOME
                 </button>
@@ -68,7 +71,7 @@
             <!-- Home Tab -->
             <div id="home-tab" class="tab-content">
                 <p class="text-gray-200 text-xl font-medium mb-4 text-center tracking-wide">Hit Hard or Go Home!</p>
-                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">Donlands Youth Presentss</h2>
+                <h2 class="text-3xl font-bold mb-4 text-white border-b-2 border-white pb-2">Donlands Youth Presents</h2>
                 <p class="text-gray-300 leading-relaxed text-base">The 2025 DBHL Cup!</p>
             </div>
             <!-- Rosters Tab -->
@@ -253,6 +256,7 @@
             document.getElementById('standings-content').innerHTML = data.standings ? formatMarkdownTable(data.standings) : '<p class="text-gray-500 italic">No standings available yet. Please add data to your Google Sheet.</p>';
             document.getElementById('stats-content').innerHTML = data.stats ? formatStatsTable(data.stats) : '<p class="text-gray-500 italic">No stats available yet. Please add data to your Google Sheet.</p>';
             document.getElementById('results-content').innerHTML = data.results ? formatResultsTable(data.results) : '<p class="text-gray-500 italic">No results available yet. Please add data to your Google Sheet.</p>';
+            document.getElementById('rules-tab').innerHTML = data.rules ? formatRules(data.rules) : '<p class="text-gray-500 italic">No rules available yet. Please add data to your Google Sheet.</p>';
         }
         
         function formatRosters(text) {
@@ -332,7 +336,8 @@
             const headers = lines[0].split(',').map(h => h.trim());
             const dataRows = lines.slice(1);
             
-            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            // The fix: removed whitespace-nowrap and added a wrapper to handle overflow
+            let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             headers.forEach(header => {
                 html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
             });
@@ -342,7 +347,7 @@
                 if (cells.length > 0) {
                     html += '<tr>';
                     cells.forEach(cell => {
-                        html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${cell}</td>`;
+                        html += `<td class="px-6 py-4 text-sm text-gray-300">${cell}</td>`;
                     });
                     html += '</tr>';
                 }
@@ -375,7 +380,8 @@
             
             playerData.sort((a, b) => b.Pts - a.Pts);
             
-            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-red-700 rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            // The fix: removed whitespace-nowrap and added a wrapper to handle overflow
+            let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-red-700 rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             const tableHeaders = ['Player', 'Team', 'G', 'A', 'Pts'];
             tableHeaders.forEach(header => {
                 html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
@@ -383,11 +389,11 @@
             html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
             playerData.forEach(player => {
                 html += '<tr>';
-                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Player}</td>`;
-                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Team}</td>`;
-                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.G}</td>`;
-                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.A}</td>`;
-                html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${player.Pts}</td>`;
+                html += `<td class="px-6 py-4 text-sm text-gray-300">${player.Player}</td>`;
+                html += `<td class="px-6 py-4 text-sm text-gray-300">${player.Team}</td>`;
+                html += `<td class="px-6 py-4 text-sm text-gray-300">${player.G}</td>`;
+                html += `<td class="px-6 py-4 text-sm text-gray-300">${player.A}</td>`;
+                html += `<td class="px-6 py-4 text-sm text-gray-300">${player.Pts}</td>`;
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
@@ -401,7 +407,8 @@
             
             const dataRows = lines.slice(1);
             
-            let html = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            // The fix: removed whitespace-nowrap and added a wrapper to handle overflow
+            let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             const headers = ['Matchup', 'Score'];
             headers.forEach(header => {
                 html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
@@ -416,8 +423,8 @@
                     const finalScore = `${score1} - ${score2}`;
                     
                     html += '<tr>';
-                    html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300 font-medium">${matchup}</td>`;
-                    html += `<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">${finalScore}</td>`;
+                    html += `<td class="px-6 py-4 text-sm text-gray-300 font-medium">${matchup}</td>`;
+                    html += `<td class="px-6 py-4 text-sm text-gray-300">${finalScore}</td>`;
                     html += '</tr>';
                 }
             });
@@ -474,15 +481,15 @@
                         }
                         html += `</div>`;
                     } else if (heading.includes('DBHL Cup')) {
-                         html += `<div><h3 class="text-lg font-semibold text-white mb-2">${heading}</h3>`;
-                         if (content.length > 0) {
-                             html += `<ul class="list-disc list-inside space-y-1 text-gray-300">`;
-                             content.forEach(line => {
-                                 html += `<li>${line.replace('* ', '')}</li>`;
-                             });
-                             html += `</ul>`;
-                         }
-                         html += `</div>`;
+                             html += `<div><h3 class="text-lg font-semibold text-white mb-2">${heading}</h3>`;
+                             if (content.length > 0) {
+                                  html += `<ul class="list-disc list-inside space-y-1 text-gray-300">`;
+                                  content.forEach(line => {
+                                        html += `<li>${line.replace('* ', '')}</li>`;
+                                  });
+                                  html += `</ul>`;
+                             }
+                             html += `</div>`;
                     } else {
                         html += `<div><p class="text-gray-300">${section}</p></div>`;
                     }
