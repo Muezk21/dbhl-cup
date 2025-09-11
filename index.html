@@ -426,16 +426,17 @@
             let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-red-700 rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             const tableHeaders = ['Player', 'Team', 'G', 'A', 'Pts'];
             tableHeaders.forEach(header => {
-                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
+                // Fixed the mobile layout issue by using responsive padding
+                html += `<th scope="col" class="px-2 sm:px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
             });
             html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
             playerData.forEach(player => {
                 html += '<tr>';
-                html += `<td class="px-6 py-4 text-sm text-gray-200">${player.Player}</td>`;
-                html += `<td class="px-6 py-4 text-sm text-gray-200">${player.Team}</td>`;
-                html += `<td class="px-6 py-4 text-sm text-gray-200">${player.G}</td>`;
-                html += `<td class="px-6 py-4 text-sm text-gray-200">${player.A}</td>`;
-                html += `<td class="px-6 py-4 text-sm text-gray-200">${player.Pts}</td>`;
+                html += `<td class="px-2 sm:px-6 py-4 text-sm text-gray-200">${player.Player}</td>`;
+                html += `<td class="px-2 sm:px-6 py-4 text-sm text-gray-200">${player.Team}</td>`;
+                html += `<td class="px-2 sm:px-6 py-4 text-sm text-gray-200">${player.G}</td>`;
+                html += `<td class="px-2 sm:px-6 py-4 text-sm text-gray-200">${player.A}</td>`;
+                html += `<td class="px-2 sm:px-6 py-4 text-sm text-gray-200">${player.Pts}</td>`;
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
