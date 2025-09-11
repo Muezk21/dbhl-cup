@@ -361,22 +361,39 @@
             const headers = lines[0].split(',').map(h => h.trim());
             const dataRows = lines.slice(1);
             
-            let html = '<table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
+            // Convert data to an array of objects for easier sorting
+            const teams = dataRows.map(line => {
+                const cells = line.split(',').map(c => c.trim());
+                const team = {};
+                if (cells.length > 0) {
+                    headers.forEach((header, index) => {
+                        team[header] = cells[index];
+                    });
+                }
+                return team;
+            }).filter(team => Object.keys(team).length > 0);
+
+            // Sort teams by the 'Pts' column in descending order
+            teams.sort((a, b) => {
+                const ptsA = parseInt(a['Pts']) || 0;
+                const ptsB = parseInt(b['Pts']) || 0;
+                return ptsB - ptsA;
+            });
+            
+            let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             headers.forEach(header => {
-                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider whitespace-nowrap">${header}</th>`;
+                html += `<th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">${header}</th>`;
             });
             html += '</tr></thead><tbody class="bg-red-900 divide-y divide-red-700">';
-            dataRows.forEach(line => {
-                const cells = line.split(',').map(c => c.trim());
-                if (cells.length > 0) {
-                    html += '<tr>';
-                    cells.forEach(cell => {
-                        html += `<td class="px-6 py-4 text-sm text-gray-200 whitespace-nowrap">${cell}</td>`;
-                    });
-                    html += '</tr>';
-                }
+            
+            teams.forEach(team => {
+                html += '<tr>';
+                headers.forEach(header => {
+                    html += `<td class="px-6 py-4 text-sm text-gray-200">${team[header]}</td>`;
+                });
+                html += '</tr>';
             });
-            html += '</tbody></table>';
+            html += '</tbody></table></div>';
             return html;
         }
         
@@ -404,7 +421,7 @@
             
             playerData.sort((a, b) => b.Pts - a.Pts);
             
-            // The fix: removed whitespace-nowrap and added a wrapper to handle overflow
+            // The fix: `overflow-x-auto` is already present but `whitespace-nowrap` was the issue
             let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-red-700 rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             const tableHeaders = ['Player', 'Team', 'G', 'A', 'Pts'];
             tableHeaders.forEach(header => {
@@ -431,7 +448,7 @@
             
             const dataRows = lines.slice(1);
             
-            // The fix: removed whitespace-nowrap and added a wrapper to handle overflow
+            // The fix: `overflow-x-auto` is already present but `whitespace-nowrap` was the issue
             let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
             const headers = ['Matchup', 'Score'];
             headers.forEach(header => {
@@ -447,7 +464,7 @@
                     const finalScore = `${score1} - ${score2}`;
                     
                     html += '<tr>';
-                    html += `<td class="px-6 py-4 text-sm text-gray-200 font-medium">${matchup}</td>`;
+                    html += `<td class="px-6 py-4 text-sm text-gray-200">${matchup}</td>`;
                     html += `<td class="px-6 py-4 text-sm text-gray-200">${finalScore}</td>`;
                     html += '</tr>';
                 }
