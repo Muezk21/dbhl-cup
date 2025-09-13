@@ -374,11 +374,20 @@
                 return team;
             }).filter(team => Object.keys(team).length > 0);
 
-            // Sort teams by the 'Pts' column in descending order
+            // Sort teams by the 'Pts' column in descending order, with GD as a tiebreaker
             teams.sort((a, b) => {
                 const ptsA = parseInt(a['Pts']) || 0;
                 const ptsB = parseInt(b['Pts']) || 0;
-                return ptsB - ptsA;
+                
+                // Primary sort by Points (descending)
+                if (ptsA !== ptsB) {
+                    return ptsB - ptsA;
+                }
+                
+                // Secondary sort by Goal Differential (GD) (descending)
+                const gdA = parseInt(a['GD']) || 0;
+                const gdB = parseInt(b['GD']) || 0;
+                return gdB - gdA;
             });
             
             let html = '<div class="overflow-x-auto"><table class="w-full table-auto divide-y divide-white rounded-md overflow-hidden"><thead class="bg-red-800"><tr>';
