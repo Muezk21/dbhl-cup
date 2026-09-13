@@ -156,7 +156,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-10">
                 <div class="card p-6">
                     <p class="text-[10px] font-semibold tracking-[0.15em] text-[var(--gold)] mb-2">DATE</p>
-                    <p class="text-lg font-semibold text-[var(--paper)]">September 19th, 2026</p>
+                    <p class="text-lg font-semibold text-[var(--paper)]">TBD — 2026</p>
                 </div>
                 <div class="card p-6">
                     <p class="text-[10px] font-semibold tracking-[0.15em] text-[var(--gold)] mb-2">LOCATION</p>
@@ -332,6 +332,26 @@
         </div>
 
         <div class="card p-6 mb-5">
+            <h3 class="display text-lg font-semibold text-[var(--paper)] mb-2">Rules &amp; Regulations</h3>
+            <p class="text-[var(--paper-dim)] mb-3">Helmets with cages, gloves, running shoes are required. Shin pads are recommended.</p>
+            <ul class="list-disc list-inside space-y-1 text-[var(--paper-dim)]">
+                <li>Offsides (floating blue line)</li>
+                <li>No Icing</li>
+                <li>All penalties will result in a penalty shot by the player who drew the penalty</li>
+                <li>Goalie smothers result in defensive neutral zone faceoffs with zone gained</li>
+            </ul>
+            <h4 class="font-semibold text-[var(--gold)] mt-4 mb-2 text-sm tracking-wide">PENALTIES</h4>
+            <ul class="list-disc list-inside space-y-1 text-[var(--paper-dim)]">
+                <li>High sticking</li>
+                <li>Hooking</li>
+                <li>Holding</li>
+                <li>Tripping</li>
+                <li>Delay of game</li>
+                <li>Unsportsmanlike conduct</li>
+            </ul>
+        </div>
+
+        <div class="card p-6 mb-5">
             <h3 class="display text-lg font-semibold text-[var(--paper)] mb-2">Round Robin Games</h3>
             <ul class="list-disc list-inside space-y-1 text-[var(--paper-dim)]">
                 <li>Two 8-minute halves</li>
@@ -445,30 +465,54 @@
     function formatRosters(text) {
         if (!text) return '';
         const lines = text.split('\n').filter(l => l.trim() !== '');
-        let teams = [], currentTeam = null;
+        // Structure: array of blocks, each either a division heading or a group of teams
+        let blocks = [];
+        let currentTeam = null;
+        let currentGroup = null;
+
+        function pushCurrentTeam() {
+            if (currentTeam) {
+                if (!currentGroup) { currentGroup = { heading: null, teams: [] }; blocks.push(currentGroup); }
+                currentGroup.teams.push(currentTeam);
+                currentTeam = null;
+            }
+        }
+
         lines.forEach(line => {
             const t = line.trim();
-            if (t.startsWith('Team')) {
-                if (currentTeam) teams.push(currentTeam);
+            const divisionMatch = t.match(/^-{2,}\s*DIVISION\s+(.+?)\s*-{2,}$/i);
+            if (divisionMatch) {
+                pushCurrentTeam();
+                currentGroup = { heading: `Division ${divisionMatch[1].toUpperCase()}`, teams: [] };
+                blocks.push(currentGroup);
+            } else if (t.startsWith('Team')) {
+                pushCurrentTeam();
                 currentTeam = { name: t, players: [] };
             } else if (currentTeam && t) {
                 currentTeam.players.push(t);
             }
         });
-        if (currentTeam) teams.push(currentTeam);
-        const maxSize = teams.reduce((m, t) => Math.max(m, t.players.length), 0);
-        let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">';
-        teams.forEach(team => {
-            html += `<div class="card p-4 rounded-r-lg flex flex-col items-start min-h-full">
-                <h3 class="display text-lg font-semibold text-[var(--paper)] mb-2 border-b border-white/10 w-full pb-2">${team.name}</h3>
-                <ul class="space-y-1 text-[var(--paper-dim)] w-full">`;
-            for (let i = 0; i < maxSize; i++) {
-                const p = team.players[i];
-                html += `<li class="min-h-[1.5rem] py-1 ${p ? '' : 'list-none'}">${p ? p.replace('(C)', '<span class="font-bold text-[var(--gold)]">(C)</span>') : ''}</li>`;
+        pushCurrentTeam();
+
+        let html = '';
+        blocks.forEach(group => {
+            if (group.heading) {
+                html += `<h3 class="display text-xl font-bold text-[var(--gold)] mt-2 mb-4 pb-2 border-b border-white/10">${group.heading}</h3>`;
             }
-            html += `</ul></div>`;
+            const maxSize = group.teams.reduce((m, t) => Math.max(m, t.players.length), 0);
+            html += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">';
+            group.teams.forEach(team => {
+                html += `<div class="card p-4 rounded-r-lg flex flex-col items-start min-h-full">
+                    <h3 class="display text-lg font-semibold text-[var(--paper)] mb-2 border-b border-white/10 w-full pb-2">${team.name}</h3>
+                    <ul class="space-y-1 text-[var(--paper-dim)] w-full">`;
+                for (let i = 0; i < maxSize; i++) {
+                    const p = team.players[i];
+                    html += `<li class="min-h-[1.5rem] py-1 ${p ? '' : 'list-none'}">${p ? p.replace('(C)', '<span class="font-bold text-[var(--gold)]">(C)</span>') : ''}</li>`;
+                }
+                html += `</ul></div>`;
+            });
+            html += '</div>';
         });
-        html += '</div>';
         return html;
     }
 
