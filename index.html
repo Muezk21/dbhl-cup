@@ -291,7 +291,12 @@
     <div id="standings-tab" class="tab-content px-4 sm:px-8 max-w-5xl mx-auto pt-24 pb-16" style="display:none;">
         <p class="eyebrow italic text-[var(--gold)] text-lg mb-1">2026 Tournament</p>
         <h2 class="display text-3xl sm:text-4xl font-bold text-[var(--paper)] mb-8 pb-3 border-b border-white/10">DBHL Standings</h2>
-        <div id="standings-content" class="text-[var(--paper-dim)] leading-relaxed"></div>
+
+        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division A</h3>
+        <div id="standings-content-a" class="text-[var(--paper-dim)] leading-relaxed mb-10"></div>
+
+        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division B</h3>
+        <div id="standings-content-b" class="text-[var(--paper-dim)] leading-relaxed"></div>
     </div>
 
     <!-- ============ STATS ============ -->
@@ -430,7 +435,8 @@
         schedule:  `${BASE_URL}&gid=1797550990`,
         statsA:    `${BASE_URL}&gid=1954362484`,
         statsB:    `${BASE_URL}&gid=893195308`,
-        standings: `${BASE_URL}&gid=1459410560`,
+        standingsA: `${BASE_URL}&gid=1459410560`,
+        standingsB: `${BASE_URL}&gid=831933461`,
         results:   `${BASE_URL}&gid=2016022014`,
     };
 
@@ -438,20 +444,21 @@
         document.getElementById('loading').style.display = 'block';
         document.getElementById('error-message').style.display = 'none';
         const allData = {};
-        try {
-            await Promise.all(Object.keys(SHEET_URLS).map(async (key) => {
+        let anyFailed = false;
+        await Promise.all(Object.keys(SHEET_URLS).map(async (key) => {
+            try {
                 const response = await fetch(SHEET_URLS[key]);
                 if (!response.ok) throw new Error(`HTTP ${response.status} for ${key}`);
                 allData[key] = await response.text();
-            }));
-            document.getElementById('loading').style.display = 'none';
-            displayData(allData);
-            document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
-        } catch (error) {
-            console.error('Could not fetch data:', error);
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error-message').style.display = 'block';
-        }
+            } catch (error) {
+                console.error(`Could not fetch "${key}":`, error);
+                anyFailed = true;
+            }
+        }));
+        document.getElementById('loading').style.display = 'none';
+        displayData(allData);
+        document.getElementById('error-message').style.display = anyFailed ? 'block' : 'none';
+        document.getElementById('last-updated').textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
     }
 
     window.addEventListener('load', () => {
@@ -463,7 +470,8 @@
     function displayData(data) {
         document.getElementById('rosters-content').innerHTML = data.rosters ? formatRosters(data.rosters) : '<p class="text-[var(--paper-dim)]/60 italic">No rosters available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('schedule-content').innerHTML = data.schedule ? formatSchedule(data.schedule) : '<p class="text-[var(--paper-dim)]/60 italic">No schedule available yet. Please add data to your Google Sheet.</p>';
-        document.getElementById('standings-content').innerHTML = data.standings ? formatMarkdownTable(data.standings) : '<p class="text-[var(--paper-dim)]/60 italic">No standings available yet. Please add data to your Google Sheet.</p>';
+        document.getElementById('standings-content-a').innerHTML = data.standingsA ? formatMarkdownTable(data.standingsA) : '<p class="text-[var(--paper-dim)]/60 italic">No standings available yet. Please add data to your Google Sheet.</p>';
+        document.getElementById('standings-content-b').innerHTML = data.standingsB ? formatMarkdownTable(data.standingsB) : '<p class="text-[var(--paper-dim)]/60 italic">No standings available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('stats-content-a').innerHTML = data.statsA ? formatStatsTable(data.statsA) : '<p class="text-[var(--paper-dim)]/60 italic">No stats available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('stats-content-b').innerHTML = data.statsB ? formatStatsTable(data.statsB) : '<p class="text-[var(--paper-dim)]/60 italic">No stats available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('results-content').innerHTML = data.results ? formatResultsTable(data.results) : '<p class="text-[var(--paper-dim)]/60 italic">No results available yet. Please add data to your Google Sheet.</p>';
