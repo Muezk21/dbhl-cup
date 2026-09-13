@@ -298,7 +298,12 @@
     <div id="stats-tab" class="tab-content px-4 sm:px-8 max-w-5xl mx-auto pt-24 pb-16" style="display:none;">
         <p class="eyebrow italic text-[var(--gold)] text-lg mb-1">2026 Tournament</p>
         <h2 class="display text-3xl sm:text-4xl font-bold text-[var(--paper)] mb-8 pb-3 border-b border-white/10">DBHL Stats</h2>
-        <div id="stats-content" class="text-[var(--paper-dim)] leading-relaxed"></div>
+
+        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division A</h3>
+        <div id="stats-content-a" class="text-[var(--paper-dim)] leading-relaxed mb-10"></div>
+
+        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division B</h3>
+        <div id="stats-content-b" class="text-[var(--paper-dim)] leading-relaxed"></div>
     </div>
 
     <!-- ============ RESULTS ============ -->
@@ -423,7 +428,8 @@
     const SHEET_URLS = {
         rosters:   `${BASE_URL}&gid=1749294497`,
         schedule:  `${BASE_URL}&gid=1797550990`,
-        stats:     `${BASE_URL}&gid=1954362484`,
+        statsA:    `${BASE_URL}&gid=1954362484`,
+        statsB:    `${BASE_URL}&gid=893195308`,
         standings: `${BASE_URL}&gid=1459410560`,
         results:   `${BASE_URL}&gid=2016022014`,
     };
@@ -458,7 +464,8 @@
         document.getElementById('rosters-content').innerHTML = data.rosters ? formatRosters(data.rosters) : '<p class="text-[var(--paper-dim)]/60 italic">No rosters available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('schedule-content').innerHTML = data.schedule ? formatSchedule(data.schedule) : '<p class="text-[var(--paper-dim)]/60 italic">No schedule available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('standings-content').innerHTML = data.standings ? formatMarkdownTable(data.standings) : '<p class="text-[var(--paper-dim)]/60 italic">No standings available yet. Please add data to your Google Sheet.</p>';
-        document.getElementById('stats-content').innerHTML = data.stats ? formatStatsTable(data.stats) : '<p class="text-[var(--paper-dim)]/60 italic">No stats available yet. Please add data to your Google Sheet.</p>';
+        document.getElementById('stats-content-a').innerHTML = data.statsA ? formatStatsTable(data.statsA) : '<p class="text-[var(--paper-dim)]/60 italic">No stats available yet. Please add data to your Google Sheet.</p>';
+        document.getElementById('stats-content-b').innerHTML = data.statsB ? formatStatsTable(data.statsB) : '<p class="text-[var(--paper-dim)]/60 italic">No stats available yet. Please add data to your Google Sheet.</p>';
         document.getElementById('results-content').innerHTML = data.results ? formatResultsTable(data.results) : '<p class="text-[var(--paper-dim)]/60 italic">No results available yet. Please add data to your Google Sheet.</p>';
     }
 
@@ -588,6 +595,8 @@
             </tr>`;
         });
         html += '</tbody></table></div>';
+        return html;
+    }
         return html;
     }
 
