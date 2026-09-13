@@ -541,11 +541,13 @@
         let html = '<div class="card p-6 rounded-r-lg space-y-2">';
         text.split('\n').filter(l => l.trim() !== '').forEach(line => {
             const parts = line.split(',');
-            if (parts.length >= 2) {
-                const time = parts[0].trim(), match = parts[1].trim();
-                if (time && match) html += `<p class="text-[var(--paper-dim)]"><span class="font-semibold text-[var(--paper)]">${time}:</span> ${match}</p>`;
-            } else if (line.trim().toLowerCase() === 'break') {
-                html += `<p class="text-center text-[var(--gold)] italic my-4">${line.trim()}</p>`;
+            const time = parts[0] ? parts[0].trim() : '';
+            const match = parts[1] ? parts[1].trim() : '';
+            if (parts.length >= 2 && time && match) {
+                html += `<p class="text-[var(--paper-dim)]"><span class="font-semibold text-[var(--paper)]">${time}:</span> ${match}</p>`;
+            } else if (time) {
+                // Any single-value row (Break, Playoffs, etc.) renders as a section heading
+                html += `<p class="text-center text-[var(--gold)] font-semibold tracking-wide uppercase text-sm my-4 pt-2 border-t border-white/10">${time}</p>`;
             }
         });
         html += '</div>';
