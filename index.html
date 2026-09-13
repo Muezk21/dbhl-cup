@@ -300,15 +300,20 @@
     </div>
 
     <!-- ============ STATS ============ -->
-    <div id="stats-tab" class="tab-content px-4 sm:px-8 max-w-5xl mx-auto pt-24 pb-16" style="display:none;">
+    <div id="stats-tab" class="tab-content px-4 sm:px-8 max-w-6xl mx-auto pt-24 pb-16" style="display:none;">
         <p class="eyebrow italic text-[var(--gold)] text-lg mb-1">2026 Tournament</p>
         <h2 class="display text-3xl sm:text-4xl font-bold text-[var(--paper)] mb-8 pb-3 border-b border-white/10">DBHL Stats</h2>
 
-        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division A</h3>
-        <div id="stats-content-a" class="text-[var(--paper-dim)] leading-relaxed mb-10"></div>
-
-        <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division B</h3>
-        <div id="stats-content-b" class="text-[var(--paper-dim)] leading-relaxed"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division A</h3>
+                <div id="stats-content-a" class="text-[var(--paper-dim)] leading-relaxed"></div>
+            </div>
+            <div>
+                <h3 class="display text-xl font-bold text-[var(--gold)] mb-4 pb-2 border-b border-white/10">Division B</h3>
+                <div id="stats-content-b" class="text-[var(--paper-dim)] leading-relaxed"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ============ RESULTS ============ -->
